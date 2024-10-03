@@ -7,7 +7,7 @@ public class Actividad1_5 {
         File directorio = new File("/home/pablo/Escritorio/PSP2DAM/out/production/PSP2DAM/");
 
         //Declaramos el ProcessBuilder y ponemos una clase que no exista
-        ProcessBuilder pb = new ProcessBuilder("/home/pablo/.jdks/openjdk-23/bin/java", "Ejemplo57");
+        ProcessBuilder pb = new ProcessBuilder("/home/pablo/.jdks/openjdk-23/bin/java", "tema1/Hola");
 
         //directorio donde esta el ejectutable
         pb.directory(directorio);
@@ -20,7 +20,7 @@ public class Actividad1_5 {
 
         //Capturamos la salida del proceso normal
         try {
-            InputStream is = p.getInputStream();  // Correct method call here
+            InputStream is = p.getInputStream();
             int exito;
             while ((exito = is.read()) != -1) {
                 System.out.print((char) exito);

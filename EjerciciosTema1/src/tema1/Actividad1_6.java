@@ -1,38 +1,56 @@
 package tema1;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class Actividad1_6 {
+
     public static void main(String[] args) throws IOException {
-        InputStreamReader inputStreamReader=new InputStreamReader(System.in);
-        BufferedReader bufferedReader=new BufferedReader(inputStreamReader);
-        int n1=0,n2=0;
+
+
+        File ruta =new File("/home/pablo/out/production/EjerciciosTema1/production/EjerciciosTema1");
+
+        ProcessBuilder pb=new ProcessBuilder("/home/pablo/.jdks/openjdk-23/bin/java", "tema1.SumarNumeros");
+
+
+        pb.directory(ruta);
+
+        //inicia el proceso
+        Process process= pb.start();
 
         try{
-            try{
-                System.out.print("Primer numero:");
-                n1= Integer.parseInt(bufferedReader.readLine());
+            OutputStream outputStream=process.getOutputStream();
 
-            }catch (NumberFormatException e){
-                e.printStackTrace();
+
+            outputStream.write("10\n".getBytes());
+            outputStream.write("20\n".getBytes());
+            outputStream.flush();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        //recoger el flujo de salida del proceso como flujo de entrada propio
+
+        //Capturamos la salida del proceso normal
+        try {
+            InputStream is = process.getInputStream();
+            int exito;
+            while ((exito = is.read()) != -1) {
+                System.out.print((char) exito);
             }
-
-            try {
-                System.out.print("Segundo numero:");
-                n2= Integer.parseInt(bufferedReader.readLine());
-            }catch (NumberFormatException e){
-                e.printStackTrace();
-            }
-
-
-
-            int suma=n1+n2;
-            System.out.println("Suma:"+suma);
-            inputStreamReader.close();
+            is.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+
+        //pg 31-->comprobacion de error o exito 0 bien 1 mal
+        int exito;
+        try{
+            exito=process.waitFor();
+            System.out.println("Valor de salida:"+exito);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
 

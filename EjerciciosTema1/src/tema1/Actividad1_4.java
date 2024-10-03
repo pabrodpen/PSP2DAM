@@ -20,16 +20,16 @@ public class Actividad1_4 {
 
         //recoger el flujo de salida del proceso como flujo de entrada propio
 
-        try{
-            InputStreamReader reader = new InputStreamReader(process.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(reader);
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+        //Capturamos la salida del proceso normal
+        try {
+            InputStream is = process.getInputStream();  // Correct method call here
+            int exito;
+            while ((exito = is.read()) != -1) {
+                System.out.print((char) exito);
             }
-
+            is.close();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
 
