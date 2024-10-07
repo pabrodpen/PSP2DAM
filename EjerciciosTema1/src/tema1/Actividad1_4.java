@@ -9,7 +9,7 @@ public class Actividad1_4 {
 
         File ruta =new File("out/production/PSP2DAM/");
 
-        ProcessBuilder pb=new ProcessBuilder("/home/pablo/.jdks/openjdk-23/bin/java", "tema1/LeerNombre", "Hola que tal");
+        ProcessBuilder pb=new ProcessBuilder("java", "tema1.LeerNombre", "Hola que tal");
 
 
         pb.directory(ruta);

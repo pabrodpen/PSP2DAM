@@ -12,7 +12,7 @@ public class Actividad1_8 {
         File ruta = new File("out/production/PSP2DAM/");  // Ruta relativa al directorio de clases compiladas
 
         // Configuración del ProcessBuilder para ejecutar Ejemplo5
-        ProcessBuilder pb = new ProcessBuilder("/home/pablo/.jdks/openjdk-23/bin/java", "tema1.Ejemplo5");
+        ProcessBuilder pb = new ProcessBuilder("java", "tema1.Ejemplo5");
         pb.directory(ruta);  // Establece el directorio de trabajo del proceso
 
         // Redirigir la entrada desde el archivo entrada.txt

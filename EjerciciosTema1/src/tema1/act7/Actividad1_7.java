@@ -15,7 +15,7 @@ public class Actividad1_7 {
 
 
         // Proceso que ejecuta la clase Ejemplo5
-        ProcessBuilder pb = new ProcessBuilder("/home/pablo/.jdks/openjdk-23/bin/java", "tema1.Ejemplo5");
+        ProcessBuilder pb = new ProcessBuilder("java", "tema1.Ejemplo5");
         pb.directory(ruta);
 
         // Redirigir la entrada, salida y errores a los archivos correspondientes

@@ -7,7 +7,7 @@ public class Actividad1_5 {
         File ruta =new File("out/production/PSP2DAM/");
 
         //Declaramos el ProcessBuilder y ponemos una clase que no exista
-        ProcessBuilder pb = new ProcessBuilder("/home/pablo/.jdks/openjdk-23/bin/java", "tema1/Hola");
+        ProcessBuilder pb = new ProcessBuilder("java", "tema1/Hola");
 
         //directorio donde esta el ejectutable
         pb.directory(ruta);
