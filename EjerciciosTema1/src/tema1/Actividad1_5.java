@@ -4,13 +4,13 @@ import java.io.*;
 public class Actividad1_5 {
     public static void main(String[] args) throws IOException {
         //Ruta del archivo
-        File directorio = new File("/home/pablo/Escritorio/PSP2DAM/out/production/PSP2DAM/");
+        File ruta =new File("out/production/PSP2DAM/");
 
         //Declaramos el ProcessBuilder y ponemos una clase que no exista
         ProcessBuilder pb = new ProcessBuilder("/home/pablo/.jdks/openjdk-23/bin/java", "tema1/Hola");
 
         //directorio donde esta el ejectutable
-        pb.directory(directorio);
+        pb.directory(ruta);
         System.out.printf("Directorio de trabajo: %s%n", pb.directory());
 
         //Iniciamos el proceso

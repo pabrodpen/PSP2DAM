@@ -1,1 +1,2 @@
-Hola soy Pablo
+Introduce una cadena
+Hola soy: Alejandro

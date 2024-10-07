@@ -1,2 +1,2 @@
 Introduce una cadena
-Cadena escrita: Pablo
+Hola soy: Alejandro

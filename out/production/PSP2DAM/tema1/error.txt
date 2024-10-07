@@ -1,2 +1,0 @@
-Error: Could not find or load main class tema1.act7.Actividad1_7
-Caused by: java.lang.ClassNotFoundException: tema1.act7.Actividad1_7

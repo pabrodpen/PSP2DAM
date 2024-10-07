@@ -5,9 +5,9 @@ import java.io.*;
 public class Actividad1_7 {
     public static void main(String[] args) throws IOException {
         // Ruta absoluta para los archivos de entrada y salida
-        File fIn = new File("/home/pablo/Escritorio/PSP2DAM/EjerciciosTema1/src/tema1/act7/entrada.txt");
-        File fOut = new File("/home/pablo/Escritorio/PSP2DAM/EjerciciosTema1/src/tema1/act7/salida.txt");
-        File fErr = new File("/home/pablo/Escritorio/PSP2DAM/EjerciciosTema1/src/tema1/act7/error.txt");
+        File fIn = new File("EjerciciosTema1/src/tema1/act7/entrada.txt");
+        File fOut = new File("EjerciciosTema1/src/tema1/act7/salida.txt");
+        File fErr = new File("EjerciciosTema1/src/tema1/act7/error.txt");
 
         File ruta =new File("/home/pablo/Escritorio/PSP2DAM/out/production/PSP2DAM/");
 

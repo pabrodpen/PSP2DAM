@@ -8,7 +8,7 @@ public class Actividad1_6 {
     public static void main(String[] args) throws IOException {
 
 
-        File ruta =new File("/home/pablo/out/production/EjerciciosTema1/production/EjerciciosTema1");
+        File ruta =new File("out/production/PSP2DAM/");
 
         ProcessBuilder pb=new ProcessBuilder("/home/pablo/.jdks/openjdk-23/bin/java", "tema1.SumarNumeros");
 

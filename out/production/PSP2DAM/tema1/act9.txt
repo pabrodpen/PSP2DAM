@@ -1,0 +1,4 @@
+1.Puede hacer varios procesos o tareas al mismo tiempo
+2.Mejorar la eficiencia del sistema coger recursos
+3.La multiprogramación permite una mejor utilización del CPU en sistemas monoprocesador, mientras que el multiprocesamiento aprovecha el hardware de múltiples núcleos para ejecutar procesos en paralelo, mejorando así el rendimiento general del sistema.
+4.Que varios hilos accedan al mismo recurso y que 2 procesos se bloqueen al intentar compartir el mismo recurso
