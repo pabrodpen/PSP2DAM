@@ -22,7 +22,7 @@ public class Actividad1_4 {
 
         //Capturamos la salida del proceso normal
         try {
-            InputStream is = process.getInputStream();  // Correct method call here
+            InputStream is = process.getInputStream();
             int exito;
             while ((exito = is.read()) != -1) {
                 System.out.print((char) exito);

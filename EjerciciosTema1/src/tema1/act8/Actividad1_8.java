@@ -3,49 +3,45 @@ package tema1.act8;
 import java.io.*;
 
 public class Actividad1_8 {
-    public static void main(String[] args) {
-        // Cambiamos la ruta de los archivos a ruta absoluta
-        File fIn = new File("/home/pablo/Escritorio/PSP2DAM/EjerciciosTema1/src/tema1/act8/entrada.txt");   // Ruta absoluta para el archivo de entrada
-        File fOut = new File("/home/pablo/Escritorio/PSP2DAM/EjerciciosTema1/src/tema1/act8/salida.txt");   // Ruta absoluta para el archivo de salida
-        File fErr = new File("/home/pablo/Escritorio/PSP2DAM/EjerciciosTema1/src/tema1/act8/error.txt");    // Ruta absoluta para el archivo de errores
+    public static void main(String[] args) throws IOException {
+        // Ruta para los archivos de entrada y salida
+        File fIn = new File("/home/pablo/Escritorio/PSP2DAM/EjerciciosTema1/src/tema1/act8/entrada.txt");
+        File fOut = new File("/home/pablo/Escritorio/PSP2DAM/EjerciciosTema1/src/tema1/act8/salida.txt");
 
+        // Ruta del directorio donde está el archivo Ejemplo5.class compilado
+        File ruta = new File("/home/pablo/Escritorio/PSP2DAM/out/production/PSP2DAM/");
 
-        // Proceso que ejecuta la clase actual
-        ProcessBuilder pb = new ProcessBuilder("/home/pablo/.jdks/openjdk-23/bin/java",  "/home/pablo/Escritorio/PSP2DAM/EjerciciosTema1/src", "tema1.act8.Actividad1_8");
+        // Configuración del ProcessBuilder para ejecutar Ejemplo5
+        ProcessBuilder pb = new ProcessBuilder("/home/pablo/.jdks/openjdk-23/bin/java", "tema1.Ejemplo5");
+        pb.directory(ruta);
 
-        // Redirigimos la entrada, salida y errores
+        // Redirigir la entrada desde el archivo entrada.txt
         pb.redirectInput(fIn);
-        pb.redirectError(fErr);
 
-        // Iniciamos el proceso
-        try {
-            Process process = pb.start();
+        // Redirigir la salida del proceso a la consola (INHERIT toma la salida estándar del proceso)
+        pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 
-            // Esperamos a que el proceso termine
-            int exitCode = process.waitFor();
-            System.out.println("El proceso terminó con el código: " + exitCode);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        // Iniciar el proceso
+        Process process = pb.start();
 
-        // Procesar entrada y escribir en salida.txt
+        // Escribir el contenido de entrada.txt en salida.txt
         try (BufferedReader reader = new BufferedReader(new FileReader(fIn));
-             BufferedWriter writer = new BufferedWriter(new FileWriter(fOut));
-             PrintStream out = new PrintStream(new FileOutputStream(fOut, true))) { // Para agregar a salida.txt
+             BufferedWriter writer = new BufferedWriter(new FileWriter(fOut))) {
 
             String linea;
             while ((linea = reader.readLine()) != null) {
-                // Procesamiento simple, convertir a mayúsculas
-
-                // Escribir en salida.txt
                 writer.write(linea);
-                writer.newLine(); // Escribimos una nueva línea
-
-                // Mostrar en consola
-                out.println(linea);
+                writer.newLine();
             }
-
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            // Esperar a que el proceso termine
+            int exitCode = process.waitFor();
+            System.out.println("El proceso terminó con el código: " + exitCode);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
