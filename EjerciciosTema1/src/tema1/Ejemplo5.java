@@ -1,4 +1,4 @@
-package tema1.Act7;
+package tema1;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

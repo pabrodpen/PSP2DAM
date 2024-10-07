@@ -1,0 +1,2 @@
+Error: Could not find or load main class .home.pablo.Escritorio.PSP2DAM.EjerciciosTema1.src
+Caused by: java.lang.ClassNotFoundException: /home/pablo/Escritorio/PSP2DAM/EjerciciosTema1/src
