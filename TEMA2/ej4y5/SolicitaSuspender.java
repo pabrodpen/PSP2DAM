@@ -1,4 +1,4 @@
-package ej4;
+package ej4y5;
 
 public class SolicitaSuspender {
     private boolean suspender;

@@ -1,15 +1,12 @@
-package ej2_2;
-
-import ej2.Hilo1;
-import ej2.Hilo2;
+package ej1_2;
 
 public class Main {
     public static void main(String[] args) {
-        Hilo h1 = new Hilo("Uno");
-        Hilo h2 = new Hilo("Dos");
-        Hilo h3 = new Hilo("Tres");
-        Hilo h4 = new Hilo("Cuatro");
-        Hilo h5 = new Hilo("Cinco");
+        Hilo h1 = new Hilo();
+        Hilo h2 = new Hilo();
+        Hilo h3 = new Hilo();
+        Hilo h4 = new Hilo();
+        Hilo h5 = new Hilo();
 
         Thread hilo1 = new Thread(h1);
         Thread hilo2 = new Thread(h2);

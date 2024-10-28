@@ -1,4 +1,4 @@
-package ej4;
+package ej4y5;
 
 import java.util.Scanner;
 
@@ -34,6 +34,14 @@ public class Main {
         // Finaliza el hilo y muestra el contador
         hilo.finalizar();
 
+
+        while (hilo.isAlive()) {
+            try {
+                Thread.sleep(100); // Espera a que el hilo termine
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         System.out.println("Valor final del contador: " + hilo.getContador());
         scanner.close();
