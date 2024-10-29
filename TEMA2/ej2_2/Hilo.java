@@ -1,16 +1,17 @@
-package ej1_2;
+package ej2_2;
 
-public class Hilo extends Thread{
+public class Hilo implements Runnable{
 
     String cadena;
-    public Hilo() {
+    public Hilo(String cadena){
+        this.cadena=cadena;
     }
 
     @Override
     public void run() {
         try {
             Thread.sleep(Thread.currentThread().getId()*500);
-            System.out.println("Hola mundo ");
+            System.out.println("Hola mundo "+cadena+":"+Thread.currentThread().getId());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
