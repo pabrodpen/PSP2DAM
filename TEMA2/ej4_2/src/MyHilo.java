@@ -28,15 +28,11 @@ public class MyHilo extends Thread {
         try {
             while (running) {
                 suspender.esperandoParaReanudar();  // Espera si el hilo está suspendido
-
                 // Incrementa y muestra el contador
                 contador++;
-                System.out.println("Contador: " + contador);
-
                 // Pausa de un segundo para ver los números
                 Thread.sleep(1000);
             }
-            System.out.println("El hilo ha terminado.");  // Mensaje al finalizar el hilo
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
