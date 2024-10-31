@@ -21,8 +21,8 @@ public class ContadorApplet extends Applet implements ActionListener {
         fuente = new Font("Verdana", Font.BOLD, 26);
 
         // Crear hilos de contadores, sin iniciar aún
-        hilo1 = new MyHilo();
-        hilo2 = new MyHilo();
+        hilo1 = new MyHilo(this);
+        hilo2 = new MyHilo(this);
 
         // Iniciar los hilos pero en pausa para esperar al boton comenzarProceso
         hilo1.start();
