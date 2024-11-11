@@ -1,3 +1,5 @@
+package ejercicio_complementario_tarea2_4.src;
+
 public class SolicitaSuspender {
     private boolean suspender;
 

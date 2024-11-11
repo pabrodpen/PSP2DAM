@@ -1,3 +1,5 @@
+package ejercicio_complementario_tarea2_4.src;
+
 public class MyHilo extends Thread {
     private SolicitaSuspender suspender = new SolicitaSuspender();
     private boolean running = true;  // Controla el fin del hilo
