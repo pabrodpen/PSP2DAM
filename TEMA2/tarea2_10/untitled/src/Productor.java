@@ -7,14 +7,24 @@ public class Productor extends Thread {
         this.n = n;
     }
 
+    @Override
     public void run() {
         for (int i = 0; i < n; i++) {
-            cola.put(i);//pone el numero
-            System.out.println(i+"=>Productor : "+n+", produce: "+i);
+            String mensaje;
+            if(i%2==0){
+                mensaje="PING";
+            }else{
+                mensaje="PONG";
+            }
+            cola.put(mensaje); // Envía el mensaje a la cola
+            System.out.println("Productor produce: " + mensaje);
 
-            try{
-                sleep(100);
-            }catch(InterruptedException e){}
+            try {
+                sleep(100); // Simula tiempo de producción
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+        System.out.println("Fin productor...");
     }
 }

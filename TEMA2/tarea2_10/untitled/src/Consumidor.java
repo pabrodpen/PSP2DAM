@@ -1,18 +1,20 @@
 public class Consumidor extends Thread {
     private Cola cola;
-    private int n;
+    private int id;
 
-    public Consumidor(Cola cola, int n) {
+    public Consumidor(Cola cola, int id) {
         this.cola = cola;
-        this.n = n;
+        this.id = id;
     }
 
     @Override
     public void run() {
-        int valor=0;
-        for(int i=0;i<5;i++){
-            valor=cola.get();//recoge el numero
-            System.out.println(i+"=>Consumidor : "+n+", consume: "+i);
+        while (true) { // Los consumidores intentan consumir indefinidamente
+            int valor=0;
+            for(int i=0;i<5;i++){
+                valor=cola.get();//recoge el numero
+                System.out.println(valor);
+            }
         }
     }
 }
