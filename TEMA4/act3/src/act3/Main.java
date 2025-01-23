@@ -1,122 +1,103 @@
 package act3;
-
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class Main {
+    public class Main {
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Cliente FTP");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLayout(new BorderLayout());
+        try {
+            // Hacemos el login con usuario y contraseña
+            String servFTP = "localhost";
+            String usuario = JOptionPane.showInputDialog(null, "Usuario:", "Conexión al servidor", JOptionPane.QUESTION_MESSAGE);
+            String password = JOptionPane.showInputDialog(null, "Contraseña:", "Conexión al servidor", JOptionPane.QUESTION_MESSAGE);
 
-        // Panel para ingresar credenciales
-        JPanel credentialsPanel = new JPanel();
-        credentialsPanel.setLayout(new GridLayout(2, 2));
-        credentialsPanel.add(new JLabel("Usuario:"));
-        JTextField userField = new JTextField();
-        credentialsPanel.add(userField);
-        credentialsPanel.add(new JLabel("Contraseña:"));
-        JPasswordField passField = new JPasswordField();
-        credentialsPanel.add(passField);
-        JButton connectButton = new JButton("Conectar");
-        credentialsPanel.add(connectButton);
+            // Conexión al servidor
+            FTPClient ftpClient = new FTPClient();
+            ftpClient.connect(servFTP);
+            ftpClient.enterLocalPassiveMode();
+            System.out.println("Conectando al servidor: " + servFTP);
+            boolean login = ftpClient.login(usuario, password);
+            if (login) {
+                JOptionPane.showMessageDialog(null, "Login exitoso.", "Conexión exitosa", JOptionPane.INFORMATION_MESSAGE);
+                ftpClient.changeWorkingDirectory("/"+usuario);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error en el login.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                ftpClient.disconnect();
+                System.exit(1);
+            }
 
-        frame.add(credentialsPanel, BorderLayout.NORTH);
+            //Obtenemos los archivos del directorio con el metodo listFiles
+            FTPFile[] archivos = ftpClient.listFiles();
+            String listaArchivos[]= new String[archivos.length];
+            for (int i = 0; i < archivos.length; i++) {
+                //si es un archivo
+                if (archivos[i].isFile()) {
+                    listaArchivos[i] = archivos[i].getName();
+                }
+            }
 
-        // Área para mostrar los archivos disponibles
-        DefaultListModel<String> fileListModel = new DefaultListModel<>();
-        JList<String> fileList = new JList<>(fileListModel);
-        frame.add(new JScrollPane(fileList), BorderLayout.CENTER);
+            //Interfaz para confirmar la descarga o cancelarla
+            JFrame ventana = new JFrame("Archivos obtenidos");
+            ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            ventana.setSize(400, 300);
 
-        // Botones para descargar y salir
-        JPanel buttonsPanel = new JPanel();
-        JButton downloadButton = new JButton("Descargar");
-        JButton exitButton = new JButton("Salir");
-        buttonsPanel.add(downloadButton);
-        buttonsPanel.add(exitButton);
-        frame.add(buttonsPanel, BorderLayout.SOUTH);
+            JList<String> mostrarArchivos = new JList<>(listaArchivos);
+            JScrollPane scrollPane = new JScrollPane(mostrarArchivos);
+            JButton botonDescargar = new JButton("Descargar archivos");
+            JButton botonSalir = new JButton("Cancelar");
 
-        FTPClient ftpClient = new FTPClient();
+            JPanel panelBotones = new JPanel();
+            panelBotones.add(botonDescargar);
+            panelBotones.add(botonSalir);
 
-        // Acción para conectar al servidor FTP
-        connectButton.addActionListener(e -> {
-            String user = userField.getText();
-            String pass = new String(passField.getPassword());
+            ventana.add(scrollPane, "Center");
+            ventana.add(panelBotones, "South");
+            ventana.setVisible(true);
 
-            try {
-                ftpClient.connect("localhost", 21); // Cambia "localhost" si usas otro servidor
-                boolean login = ftpClient.login(user, pass);
+            //Descargamos el archivo seleccionado
+            botonDescargar.addActionListener(e -> {
+                String archivoSeleccionado = mostrarArchivos.getSelectedValue();
+                if (archivoSeleccionado != null) {
+                    JFileChooser fileChooser = new JFileChooser();
+                        fileChooser.setDialogTitle("Ubicacion para guardar archivo");
+                    fileChooser.setSelectedFile(new java.io.File(archivoSeleccionado));
 
-                if (login) {
-                    JOptionPane.showMessageDialog(frame, "Conexión exitosa.");
-                    ftpClient.enterLocalPassiveMode();
-                    ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
-
-                    // Listar archivos y directorios
-                    fileListModel.clear();
-                    FTPFile[] files = ftpClient.listFiles();
-                    for (FTPFile file : files) {
-                        if (file.isFile()) {
-                            fileListModel.addElement(file.getName());
-                        } else if (file.isDirectory()) {
-                            fileListModel.addElement("[Directorio] " + file.getName());
+                    int userSelection = fileChooser.showSaveDialog(null);
+                    if (userSelection == JFileChooser.APPROVE_OPTION) {
+                        try (FileOutputStream fos = new FileOutputStream(fileChooser.getSelectedFile())) {
+                            boolean exito = ftpClient.retrieveFile(archivoSeleccionado, fos);
+                            if (exito) {
+                                JOptionPane.showMessageDialog(null, "Archivo descargado correctamente: " + archivoSeleccionado, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "No se ha podido realizar la descarga.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
                         }
                     }
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Error de inicio de sesión.");
+                    //en caso de que no se haya seleccionando ningun archivo
+                    JOptionPane.showMessageDialog(null, "Es necesario seleccionar un archivo.", "Warning Message", JOptionPane.WARNING_MESSAGE);
                 }
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(frame, "Error al conectar: " + ex.getMessage());
-            }
-        });
+            });
 
-        // Descargarmos el archivo seleccionado
-        downloadButton.addActionListener(e -> {
-            String selectedFile = fileList.getSelectedValue();
-            if (selectedFile == null || selectedFile.startsWith("[Directorio]")) {
-                JOptionPane.showMessageDialog(frame, "Selecciona un archivo para descargar.");
-                return;
-            }
-
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Selecciona dónde guardar el archivo");
-            fileChooser.setSelectedFile(new java.io.File(selectedFile));
-            int userSelection = fileChooser.showSaveDialog(frame);
-
-            if (userSelection == JFileChooser.APPROVE_OPTION) {
-                try (FileOutputStream fos = new FileOutputStream(fileChooser.getSelectedFile())) {
-                    boolean success = ftpClient.retrieveFile(selectedFile, fos);
-                    if (success) {
-                        JOptionPane.showMessageDialog(frame, "Archivo descargado correctamente.");
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "Error al descargar el archivo.");
-                    }
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(frame, "Error: " + ex.getMessage());
-                }
-            }
-        });
-
-        //Salimos
-        exitButton.addActionListener(e -> {
-            try {
-                if (ftpClient.isConnected()) {
+            //Boton para salir
+            botonSalir.addActionListener(e -> {
+                try {
                     ftpClient.logout();
                     ftpClient.disconnect();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            System.exit(0);
-        });
+                System.exit(0);
+            });
 
-        frame.setVisible(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
