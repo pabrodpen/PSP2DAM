@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 public class Cliente {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -8,8 +9,13 @@ public class Cliente {
         DatagramSocket socket = new DatagramSocket();
         System.out.println("Cliente UDP iniciado...");
 
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Nombre:");
+        String nombre = sc.nextLine();
+        System.out.println("Edad:");
+        int edad = sc.nextInt();
         // Creamos un objeto Persona
-        Persona persona = new Persona("ClienteOriginal", 25);
+        Persona persona = new Persona(nombre, edad);
 
         // Convertimos el objeto a bytes
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

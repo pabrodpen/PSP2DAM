@@ -1,26 +1,43 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
+import java.util.Scanner;
 
 public class Cliente {
-    public static void main(String[] args) throws IOException {
-        String host = "localhost";
-        int puerto = 6001;
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        DatagramSocket socket = new DatagramSocket();
+        InetAddress servidor = InetAddress.getByName("localhost");
+        int puerto = 12345;
 
-        Socket cliente = new Socket(host, puerto);
-        PrintWriter salida = new PrintWriter(cliente.getOutputStream(), true);
-        BufferedReader entrada = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
+        Scanner scanner = new Scanner(System.in);
 
-        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("Introduce dos números separados por coma: ");
-        String numeros = teclado.readLine();
+        while (true) {
+            System.out.print("Introduce el ID del alumno (o * para salir): ");
+            String idalumno = scanner.nextLine();
 
-        salida.println(numeros);
-        System.out.println(entrada.readLine());
-        System.out.println(entrada.readLine());
+            if (idalumno.equals("*")) {
+                System.out.println("Saliendo del cliente...");
+                break;
+            }
 
-        cliente.close();
+            // Enviar petición
+            byte[] bufferEnvio = idalumno.getBytes();
+            DatagramPacket peticion = new DatagramPacket(bufferEnvio, bufferEnvio.length, servidor, puerto);
+            socket.send(peticion);
+
+            // Recibir respuesta
+            byte[] bufferRespuesta = new byte[1024];
+            DatagramPacket respuesta = new DatagramPacket(bufferRespuesta, bufferRespuesta.length);
+            socket.receive(respuesta);
+
+            // Deserializar objeto
+            ByteArrayInputStream bais = new ByteArrayInputStream(respuesta.getData(), 0, respuesta.getLength());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            Alumno alumno = (Alumno) ois.readObject();
+
+            // Mostrar datos
+            System.out.println("Datos recibidos: " + alumno);
+        }
+
+        socket.close();
     }
 }

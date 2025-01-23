@@ -1,33 +1,46 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Servidor {
     public static void main(String[] args) throws IOException {
-        int puerto = 6001;
-        ServerSocket servidor = new ServerSocket(puerto);
-        System.out.println("Servidor de operaciones iniciado en el puerto " + puerto);
+        DatagramSocket socket = new DatagramSocket(12345);
+        System.out.println("Servidor UDP iniciado...");
+
+        // Base de datos simulada
+        Map<String, Alumno> alumnos = new HashMap<>();
+        alumnos.put("A001", new Alumno("A001", "Juan Perez", new Curso("C001", "Matematicas"), 85));
+        alumnos.put("A002", new Alumno("A002", "Maria Lopez", new Curso("C002", "Fisica"), 90));
+        alumnos.put("A003", new Alumno("A003", "Carlos Ruiz", new Curso("C003", "Quimica"), 78));
+
+        byte[] buffer = new byte[1024];
 
         while (true) {
-            Socket cliente = servidor.accept();
-            BufferedReader entrada = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
-            PrintWriter salida = new PrintWriter(cliente.getOutputStream(), true);
+            // Recibir petición
+            DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
+            socket.receive(peticion);
 
-            String linea = entrada.readLine();
-            String[] numeros = linea.split(",");
-            int num1 = Integer.parseInt(numeros[0]);
-            int num2 = Integer.parseInt(numeros[1]);
+            String idalumno = new String(peticion.getData(), 0, peticion.getLength());
+            System.out.println("Consulta recibida para ID: " + idalumno);
 
-            int suma = num1 + num2;
-            int producto = num1 * num2;
+            // Crear respuesta
+            Alumno alumno = alumnos.getOrDefault(idalumno, new Alumno(idalumno, "No existe", null, 0));
 
-            salida.println("Suma: " + suma);
-            salida.println("Producto: " + producto);
+            // Serializar objeto
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(alumno);
+            byte[] respuestaBytes = baos.toByteArray();
 
-            cliente.close();
+            // Enviar respuesta
+            DatagramPacket respuesta = new DatagramPacket(
+                    respuestaBytes,
+                    respuestaBytes.length,
+                    peticion.getAddress(),
+                    peticion.getPort()
+            );
+            socket.send(respuesta);
         }
     }
 }

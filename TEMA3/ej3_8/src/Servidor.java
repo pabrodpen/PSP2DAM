@@ -20,7 +20,7 @@ public class Servidor {
         System.out.println("Datos recibidos: Nombre = " + persona.getNombre() + ", Edad = " + persona.getEdad());
 
         // Modificamos los datos del objeto
-        persona.setNombre("ServidorModificado");
+        persona.setNombre("Modificado");
         persona.setEdad(persona.getEdad() + 10);
 
         // Convertimos el objeto modificado a bytes
