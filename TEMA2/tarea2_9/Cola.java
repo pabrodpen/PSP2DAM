@@ -1,17 +1,34 @@
+package tarea2_9;
+
 public class Cola {
     private int numero;
-    private boolean disponible=false;//inicialmente cola vacia
+    private boolean disponible = false; // inicialmente la cola está vacía
 
-    public int get(){
-        if(disponible){//hay numero en la cola
-            disponible=false;//se pone cola vacia
-            return numero;//se devuelve
+    public synchronized int get() {
+        while (!disponible) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        return -1;//no hay numero disponible
+        System.out.println("=> Consumidor consume: " + numero);
+        disponible = false;
+        notify();
+        return numero;
     }
 
-    public void put(int valor){
-        numero=valor;
-        disponible=true;//cola llena
+    public synchronized void put(int valor) {
+        while (disponible) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        numero = valor;
+        disponible = true;
+        System.out.println("=> Productor produce: " + numero);
+        notify();
     }
 }

@@ -1,3 +1,5 @@
+package tarea2_10.tarea2_10.src;
+
 public class Productor extends Thread {
     private Cola cola;
 

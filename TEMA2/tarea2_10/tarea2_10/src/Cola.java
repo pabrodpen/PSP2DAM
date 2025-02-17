@@ -1,3 +1,5 @@
+package tarea2_10.tarea2_10.src;
+
 public class Cola {
     private String mensaje; // Almacena el mensaje actual
     private boolean disponible = false; // Estado de la cola

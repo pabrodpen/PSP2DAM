@@ -1,3 +1,5 @@
+package tarea2_9;
+
 public class Consumidor extends Thread {
     private Cola cola;
     private int n;
@@ -9,10 +11,8 @@ public class Consumidor extends Thread {
 
     @Override
     public void run() {
-        int valor=0;
-        for(int i=0;i<5;i++){
-            valor=cola.get();//recoge el numero
-            System.out.println(i+"=>Consumidor : "+n+", consume: "+i);
+        for (int i = 0; i < 5; i++) {
+            cola.get(); // recoge el número
         }
     }
 }

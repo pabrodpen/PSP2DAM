@@ -1,3 +1,5 @@
+package tarea2_9;
+
 public class Productor extends Thread {
     private Cola cola;
     private int n;
@@ -8,13 +10,13 @@ public class Productor extends Thread {
     }
 
     public void run() {
-        for (int i = 0; i < n; i++) {
-            cola.put(i);//pone el numero
-            System.out.println(i+"=>Productor : "+n+", produce: "+i);
-
-            try{
+        for (int i = 0; i < 5; i++) {
+            cola.put(i); // pone el número
+            try {
                 sleep(100);
-            }catch(InterruptedException e){}
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

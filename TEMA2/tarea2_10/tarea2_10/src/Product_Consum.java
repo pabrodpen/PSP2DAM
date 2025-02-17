@@ -1,3 +1,5 @@
+package tarea2_10.tarea2_10.src;
+
 public class Product_Consum {
     public static void main(String[] args) {
         Cola cola = new Cola();

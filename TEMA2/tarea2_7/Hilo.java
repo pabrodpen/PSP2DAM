@@ -1,3 +1,5 @@
+package tarea2_7;
+
 public class Hilo implements Runnable{
 
     static int contador = 0;
