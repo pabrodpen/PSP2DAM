@@ -32,13 +32,13 @@ public class Parte1 {
     }
 
     static String Hexadecimal(byte[]resumen){
-        String hexadecimal="";
+        String hex="";
         for(int i=0;i<resumen.length;i++){
-            String hex=Integer.toHexString(resumen[i]&0xff);
-            if(hex.length()==1){
-                hexadecimal+=hex;
-            }
+            String h=Integer.toHexString(resumen[i]&0xFF);
+            if(h.length()==1) hex+="0";
+                hex+=h;
         }
-        return hexadecimal.toUpperCase();
+
+        return hex.toUpperCase();
     }
 }

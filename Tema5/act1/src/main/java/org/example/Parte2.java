@@ -23,5 +23,6 @@ public class Parte2 {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
     }
 }
