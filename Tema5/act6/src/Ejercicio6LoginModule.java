@@ -1,0 +1,74 @@
+import javax.security.auth.Subject;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
+import javax.security.auth.login.LoginException;
+import javax.security.auth.spi.LoginModule;
+import java.util.Map;
+
+public class Ejercicio6LoginModule implements LoginModule {
+    private Subject subject;
+    private CallbackHandler callbackHandler;
+    String usuario;
+    String clave;
+
+    private Ejercicio6Principal usuarioPrincipal;
+
+    public boolean commit() throws LoginException {
+        usuarioPrincipal=new Ejercicio6Principal(usuario);
+
+        if(!subject.getPrincipals().contains(usuarioPrincipal)){
+            subject.getPrincipals().add(usuarioPrincipal);
+        }
+        return true;
+    }
+    public boolean abort() throws LoginException { return true; }
+
+
+    @Override
+    public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState, Map<String, ?> options) {
+        this.subject = subject;
+        this.callbackHandler = callbackHandler;
+    }
+
+    // Método login - se realiza la autenticación
+    public boolean login() throws LoginException {
+        boolean autenticado = true;
+        if (callbackHandler == null) {
+            throw new LoginException("Se necesita CallbackHandler");
+        }
+
+        // Se crea el array de Callbacks
+        Callback[] callbacks = new Callback[2];
+
+        // Constructor de NameCallback y PasswordCallback con prompt
+        callbacks[0] = new NameCallback("Nombre de usuario: ");
+        callbacks[1] = new PasswordCallback("Clave: ", false);
+
+        try {
+            // Se invoca al método handle del CallbackHandler
+            // para solicitar el usuario y la contraseña
+            callbackHandler.handle(callbacks);
+            String usuario = ((NameCallback) callbacks[0]).getName();
+            char[] passw = ((PasswordCallback) callbacks[1]).getPassword();
+            String clave = new String(passw);
+
+            // La autenticación se realiza aquí
+
+            autenticado = ("pedro".equalsIgnoreCase(usuario) && "abcd".equals(clave));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return autenticado; // Devuelve true o false
+
+    }
+    public boolean logout() throws LoginException{
+        subject.getPrincipals().remove(usuarioPrincipal);
+        usuarioPrincipal=null;
+        usuario=null;
+        clave=null;
+        return true;
+    }
+}
